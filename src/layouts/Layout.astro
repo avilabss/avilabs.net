@@ -3,6 +3,7 @@ import "../styles/fonts.css"
 import "../styles/base.css"
 import "../styles/theme.css"
 import "../styles/article.css"
+import "../styles/links.css"
 import BaseHead from "../components/BaseHead.astro";
 
 const { ...rest } = Astro.props;
@@ -15,13 +16,18 @@ const { ...rest } = Astro.props;
     </head>
     <body class="h-full flex bg-body-900 text-text-800 transition-colors">
         <div class="overlay z-0"></div>
-        <div class="flex flex-col items-center w-full z-1">
+        <div class="flex flex-col items-center w-full z-10">
             <slot />
         </div>
     </body>
 </html>
 
 <style is:global>
+    * {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
     .overlay {
         position: absolute;
         top: 0;

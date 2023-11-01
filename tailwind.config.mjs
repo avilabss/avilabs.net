@@ -5,11 +5,14 @@ export default {
     extend: {
       fontFamily: {
         sans: "var(--font-family-sans)",
-        // display: "var(--font-family-sans)",
-        // article: "var(--font-family-article)",
-        // articleTitle: "var(--font-family-article-title)",
+        article: "var(--font-family-article)",
+        articleTitle: "var(--font-family-article-title)",
+        code: "var(--font-family-code)",
       },
       colors: {
+        brand: {
+          900: "var(--brand-900)",
+        },
         body: {
           100: "var(--body-100)",
           200: "var(--body-200)",
