@@ -6,9 +6,10 @@
     --gap-3: 8px;
 
     /* font family */
-    --font-family-sans: "Hanken Grotesk", sans-serif, "Lora", serif;
-    --font-family-article: "Soleil", ui-serif, ui-serif, serif;
+    --font-family-sans: "Hanken Grotesk", sans-serif, serif;
+    --font-family-article: "Soleil", ui-serif, serif;
     --font-family-article-title: "Mackinac", serif;
+    --font-family-code: "Jetbrains Mono", monospace;
   }
 
   html {
@@ -17,6 +18,7 @@
     text-rendering: optimizeLegibility;
 
     /* body light */
+    --body-100: hsl(225 21% 53%);
     --body-200: hsl(225 21% 69%);
     --body-300: hsl(225 21% 73%);
     --body-400: hsl(225 21% 79%);
@@ -90,6 +92,36 @@
     --astro-code-token-link: honeydew;
   }
 
+  /* Code block numbering */
+  @media only screen and (min-width: 768px) {
+    code {
+      counter-reset: step;
+      counter-increment: step 0;
+    }
+
+    code .line::before {
+      content: counter(step);
+      counter-increment: step;
+      width: 1rem;
+      margin-right: 1.5rem;
+      display: inline-flex;
+      white-space: nowrap;
+      text-align: right;
+      color: var(--astro-code-token-comment);
+    }
+  }
+
+  /* code block font */
+  code,
+  pre {
+    font-family: var(--font-family-code) !important;
+  }
+
+  /* more nifty stuff */
+  iframe {
+    max-width: 100%;
+  }
+
   .astro-code {
     font-size: 1.25rem;
     outline: 1px solid var(--body-800);
@@ -100,4 +132,6 @@
     flex-direction: column;
     gap: 5px;
   }
+
+  
 }
