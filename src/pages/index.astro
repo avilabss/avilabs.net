@@ -2,7 +2,12 @@
 import Layout from "../layouts/Layout.astro"
 import Navbar from "../components/Navbar.astro";
 import Bio from "../components/Bio.astro";
+import ArticleLink from "../components/ArticleLink.astro";
+import HomepageSection from "../components/HomepageSection.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import Rss from "../components/icons/Rss.astro";
 import { getAllContent } from "../scripts/content";
+import { sub } from "date-fns";
 
 const articles = await getAllContent();
 ---
@@ -15,6 +20,38 @@ const articles = await getAllContent();
 		>
 			<div class="mb-8">
 				<Bio />
+			</div>
+			<div class="grid grid-cols-3 gap-8">
+				<div
+					class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
+				>
+					<HomepageSection>
+						<SectionHeader>
+							{articles.length} Articles 📝
+							<a
+								slot="aside"
+								href="/rss.xml"
+								class="underline underline-offset-4 inline-flex items-center gap-2 text-text-500"
+							>
+								<p>Subscribe to the RSS feed</p>
+								<Rss />
+							</a>
+						</SectionHeader>
+						<div class="posts flex flex-col gap-3">
+							{
+							  articles.map((article) => {
+								const isNew = sub(new Date(), { days: 30 }) < article.data.date;
+			  
+								return (
+								  <div class="post">
+									<ArticleLink {...article} isNew={isNew} />
+								  </div>
+								);
+							  })
+							}
+						</div>
+					</HomepageSection>
+				</div>
 			</div>
 		</div>
 	</main>
