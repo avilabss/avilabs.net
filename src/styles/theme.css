@@ -129,10 +129,7 @@
     font-size: 1.25rem;
     outline: 1px solid var(--body-800);
     border-radius: 0.5rem;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 1.25rem 1.5rem;
     margin-top: 1.5rem !important;
     margin-bottom: 1.5rem !important;
   }

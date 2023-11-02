@@ -3,6 +3,8 @@ import { getCollection } from "astro:content"
 import Layout from "../../layouts/Layout.astro"
 import Navbar from "../../components/Navbar.astro";
 import PostHeader from "../../components/article/PostHeader.astro";
+import Twitter from "../../components/cta/Twitter.astro";
+import NextArticleLinks from "../../components/NextArticleLinks.astro";
 
 export async function getStaticPaths() {
   const articleEntries = await getCollection('articles');
@@ -34,5 +36,49 @@ const minutesRead = remarkPluginFrontmatter.minutesRead;
     <main class="main-article article-grid px-6 lg:px-0 text-xl lg:text-2xl leading-10 my-8 text-text-700 w-full larger-line-height">
       <Content />
     </main>
+    <div class="w-full h-full relative">
+      <hr 
+        class="mt-2 mb-2 border-t-1 w-full h-[1px] border-body-800 col-span-full transition-all"
+      />
+      <div class="article-grid relative z-20 py-12">
+        <Twitter />
+        {
+          Astro.params.slug && (
+            <NextArticleLinks slug={Astro.params.slug} />
+          )
+        }
+      </div>
+      <div class="overlay rotate-180 z-0"></div>
+    </div>
   </article>
 </Layout>
+
+<button class="z-10 to-top-button items-center gap-2 opacity-0 transition-all appearance-none hidden xl:flex fixed bottom-4 left-16 text-text-200 duration-300 hover:text-brand-900 font-sans">
+  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414 0zm0-6a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 5.414 5.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+  <span>Go Up</span>
+</button>
+
+<script>
+  import throttle from "lodash/throttle";
+
+  const toTopButton = document.querySelector('.to-top-button') as HTMLButtonElement;
+
+  document.addEventListener(
+    "scroll",
+    throttle(() => {
+      if (window.scrollY > 1000) {
+        toTopButton.classList.remove("opacity-0");
+      } else {
+        toTopButton.classList.add("opacity-0");
+      }
+    }, 200),
+  );
+
+  toTopButton.addEventListener("click", () => {
+    window.scrollTo({
+      behavior: "smooth",
+      top: 0,
+      left: 0,
+    });
+  });
+</script>

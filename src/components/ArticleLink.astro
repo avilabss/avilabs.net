@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { routes } from "../routing";
+import { formatDistance } from "date-fns";
+import getReadingTime from "reading-time";
+
+export type Props = CollectionEntry<"articles"> & {
+  isNew: boolean;
+};
+const { data, slug, isNew, body } = Astro.props;
+const { banner } = data;
+const readingTime = getReadingTime(body);
+---
+
+<a 
+    data-article-id={slug}
+    data-is-new={isNew ? "true" : "false"}
+    href={routes.article(slug)}
+    rel="prefetch"
+    class="article-entry container flex h-full transition-transform duration-300 transform-gpu rounded border border-body-700 bg-body-900"
+>   
+    <div class="flex flex-row flex-1 relative h-full">
+        <div class="z-10 flex-1">
+            <div class="flex flex-col gap-2 px-4 py-4">
+                <h2
+                    class="article-title text-lg font-medium leading-5 w-fit"
+                >
+                    {data.title}
+                </h2>
+                <p class="text-text-100 leading-6">
+                    {data.description}
+                </p>
+                <time
+                    class="text-xs color-text-300 leading-3"
+                    datetime={data.date.toString()}
+                >
+                    Posted {
+                        formatDistance(data.date, new Date(), { addSuffix: true })
+                    }
+                </time>
+            </div>
+            <hr class="w-full article-bottom-border h-[1px]" />
+            <ul class="flex px-4 py-2 gap-2 flex-wrap text-xs text-text-100">
+                <div class="text-text-300">
+                  {readingTime.text}
+                </div>
+                <div class="h-full w-[1px] bg-body-700 mr-2"></div>
+                {data.tags.map((tag) => <div class="pr-2">{tag}</div>)}
+            </ul>
+        </div>
+        {
+            banner && (
+                <div
+                    style={{ aspectRatio: "16/9" }}
+                    class="hidden md:inline-block ml-auto overflow-hidden rounded z-20 max-w-[200px] w-full object-cover h-full flex-shrink-0"
+                >
+                    {isNew && (
+                    <div class="new-tag z-20 tracking-wider font-bold text-xs absolute right-0 top-0 text-center rounded m-2 px-2 bg-brand-900 text-white">
+                        NEW
+                    </div>
+                    )}
+                    <Image
+                        width={500}
+                        alt="Banner for article"
+                        loading="lazy"
+                        class="article-image object-cover absolute min-w-[200px] w-auto max-w-[200px] right-0 z-10 rounded-r transition-all h-full"
+                        src={banner}
+                    />
+                </div>
+            )
+        }
+    </div>
+</a>
+
+<style>
+    .article-bottom-border {
+      border: none;
+      background: linear-gradient(to right, var(--body-700), transparent);
+    }
+    .article-image {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 20% 100%);
+    }
+  
+    .unread .new-tag {
+      display: block;
+    }
+
+    .article-entry:hover {
+        transform: translateY(-5px);
+    }
+</style>

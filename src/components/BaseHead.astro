@@ -16,3 +16,12 @@ const { title, description } = Astro.props
     import { initTheme } from "../scripts/theme-switcher"
     initTheme()
 </script>
+
+<noscript>
+    <style>      
+      /* can't get last read date without js */
+      .last-read {
+        display: none;
+      }
+    </style>
+</noscript>
