@@ -1,3 +1,14 @@
-<span class="rounded-sm outline outline-1 outline-body-700 px-5 py-2 bg-body-800">
+---
+interface Props {
+  class?: string;
+}
+---
+
+<span 
+    class:list={[
+    "rounded-sm outline outline-1 outline-body-700 font-medium",
+    Astro.props.class,
+  ]}
+>
     <slot />
 </span>

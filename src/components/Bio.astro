@@ -1,0 +1,123 @@
+---
+import { Image } from "astro:assets";
+import Email from "./icons/Email.astro";
+import Github from "./icons/Github.astro";
+import Twitter from "./icons/Twitter.astro";
+import ExternalLink from "./ExternalLink.astro";
+import MyAvatar from "../assets/my-avatar.png"
+---
+
+<div class="flex flex-col md:flex-row justify-between w-full gap-8">
+    <div class="flex flex-col gap-4 flex-grow-0 max-w-[44rem] text-xl leading-8">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-2">
+            Hi, I'm Avinash.
+        </h1>
+
+        <div class="text-text-400 flex flex-col gap-4">
+            <p>
+                Welcome to my digital playground! I'm a passionate coder who thrives on turning creative ideas into digital realities.
+            </p>
+            <p>
+                While my journey began in full-stack development, I eventually ventured into the fascinating realms of low-level programming, reverse engineering, and hardware hacking.
+            </p>
+            <p>
+                Hailing from the vibrant city of Mumbai, India, I'm on a mission to explore the intricate world of technology and share my experiences with you.
+            </p>
+        </div>
+        <div class="flex flex-col gap-2">
+            <div class="flex gap-4 text-3xl text-text-700">
+                {
+                    import.meta.env.SOCIAL_GITHUB && (
+                      <ExternalLink
+                        noIcon
+                        href={`https://github.com/${import.meta.env.SOCIAL_GITHUB}`}
+                        target="_blank"
+                        class="hover:text-text-900"
+                      >
+                        <Github />
+                      </ExternalLink>
+                    )
+                }
+                {
+                    import.meta.env.SOCIAL_TWITTER && (
+                      <ExternalLink
+                        noIcon
+                        href={`https://twitter.com/${import.meta.env.SOCIAL_TWITTER}`}
+                        target="_blank"
+                        class="hover:text-text-900"
+                      >
+                        <Twitter />
+                      </ExternalLink>
+                    )
+                }
+                {
+                    import.meta.env.SOCIAL_EMAIL && (
+                      <ExternalLink
+                        noIcon
+                        href=""
+                        target="_blank"
+                        class="email-target hover:text-text-900 relative"
+                      >
+                        <div
+                          class="obfuscated-email display-none"
+                          data-email={JSON.stringify(
+                            import.meta.env.SOCIAL_EMAIL.split("").map((char: string) =>
+                              char.codePointAt(0),
+                            ),
+                          )}
+                        />
+                        <Email />
+                      </ExternalLink>
+                    )
+                }
+            </div>
+        </div>
+    </div>
+
+    <div
+        class="w-full lg:max-w-[390px] max-w-[300px] aspect-ratio-1 flex-shrink-0 group relative h-min"
+    >
+        <span
+        class="rounded-md image-container -z-1 outline outline-1 outline-body-800"
+        ></span>
+        <Image
+        id="custom-avatar"
+        alt="Profile picture"
+        quality={100}
+        class="z-2 outline outline-1 rounded outline-body-500 h-full bg-body-900"
+        src={MyAvatar}
+        width={400}
+        height={400}
+        sizes=""
+        />
+    </div>
+</div>
+
+<noscript>
+    <style>
+      .email-target {
+        display: none;
+      }
+    </style>
+</noscript>
+
+<script>
+    const email = document.querySelector(
+      ".obfuscated-email",
+    )! as HTMLAnchorElement;
+    const emailTarget = document.querySelector(
+      ".email-target",
+    )! as HTMLDivElement;
+  
+    const myEmail: number[] = JSON.parse(email.dataset.email ?? "[]");
+    emailTarget.setAttribute("href", `mailto:${String.fromCharCode(...myEmail)}`);
+  
+    const avatar = document.querySelector("#custom-avatar") as HTMLImageElement;
+    avatar!.addEventListener("load", () => {
+      avatar!.classList.add("fade-in");
+    });
+  
+    if (avatar!.complete) {
+      avatar!.classList.add("fade-in");
+    }
+</script>

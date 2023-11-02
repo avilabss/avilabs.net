@@ -6,7 +6,7 @@ import "../styles/article.css"
 import "../styles/links.css"
 import BaseHead from "../components/BaseHead.astro";
 
-const { ...rest } = Astro.props;
+const { class: className, ...rest } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ const { ...rest } = Astro.props;
     <head>
         <BaseHead {...rest} />
     </head>
-    <body class="h-full flex bg-body-900 text-text-800 transition-colors">
+    <body class:list={["h-full flex bg-body-900 text-text-800 transition-colors", className]}>
         <div class="overlay z-0"></div>
         <div class="flex flex-col items-center w-full z-10">
             <slot />

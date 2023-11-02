@@ -1,8 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Navbar from "../components/Navbar.astro";
+import Bio from "../components/Bio.astro";
+import { getAllContent } from "../scripts/content";
+
+const articles = await getAllContent();
 ---
 
 <Layout title="Avinash">
 	<Navbar />
+	<main class="flex justify-center w-full my-7xl lg:my-[10%] mx-6">
+		<div
+			class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6"
+		>
+			<div class="mb-8">
+				<Bio />
+			</div>
+		</div>
+	</main>
 </Layout>
