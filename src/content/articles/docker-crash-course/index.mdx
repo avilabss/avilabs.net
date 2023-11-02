@@ -9,14 +9,4 @@ slug: docker-crash-course
 banner: "./assets/banner.jpg"
 ---
 
-For the past year, I've been working on a website for Kpop image aggregation and labeling called <a href="https://kiyomi.io">Kiyomi</a>. I'm interested in imageboards like <a href="https://safebooru.org/" target="_blank" rel="noreferrer">Safebooru</a> that have an active community of fans who label every anime image to make searching easy for everyone. I love seeing how members come together to create a massive database of carefully curated content, and it's only possible because of how much diverse content there is for the community to go through. For that reason, one of the challenges in working on Kiyomi has been to make sure that I can get fresh content to users automatically. Thankfully, there's nothing Kpop idols love more than posting images of themselves online, so there's an endless source of relevant material to work with.
-
-I decided to solve this with what I know best, a scraper that I named **Jiu** after one of the top 7 <a href="https://www.youtube.com/watch?v=PEKkdIT8JPM">Dreamcatcher</a> members. In case you're not familiar, scraping is a way of programmatically going to a website and extracting some kind of information from it. In my case, this information is image URLs and their associated metadata.
-
-Normally this kind of image retrieval task is trivial to work with if all you need to check is a handful of pages on a single site. It's nothing more than a for loop, some database lookups, and a bunch of HTTP requests. But I was planning on scraping many websites, which meant the solution had to be easily extendable to support new sites. I also had to consider another thing, which is that I don't wanna like... be an asshole? I don't like it when devs carelessly hammer my website with requests. So given the nature of what I'm doing, it would be pretty hypocritical of me to try to do the same for others. This meant that while working on this service, I first had to exhaust all of the "good guy" workarounds before I moved on to less-friendly measures like rotating IPs and pretending to be a real user with puppeteer.
-
-This project was originally meant to be a part of Kiyomi, but I figured the problem of finding images online was generic enough that it could be <a href="https://github.com/xetera/jiu" target="_blank">its own standalone thing</a>. Solving some of these problems has been incredibly fun and a huge learning process for me, so I'd like to document at least some of the ways I dealt with them.
-
-## The problem space
-
-This isn't crucial to understanding the problem, but I want to share the infrastructure Jiu sits on top of because it could provide important context. Also, I spent a lot of time working on this and drawing the diagram for it, so I'm going to need someone to look at it.
+Test Article 01 
