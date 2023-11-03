@@ -28,7 +28,7 @@ export function persistTheme(mode: Mode): void {
 export function setTheme(mode: Mode): void {
   if (mode === "system") {
     const shouldUseDarkTheme = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      "(prefers-color-scheme: dark)",
     ).matches;
     setThemeOnPage(shouldUseDarkTheme ? "dark" : "light");
   } else {

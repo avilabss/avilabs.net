@@ -10,18 +10,27 @@ const RECOMMENDATION_LENGTH = 3;
 
 const articles = await getAllContent();
 
-const currentPostPosition = articles.findIndex(article => article.slug === Astro.props.slug)
-let nextArticles = articles.slice(currentPostPosition + 1, currentPostPosition + RECOMMENDATION_LENGTH)
+const currentPostPosition = articles.findIndex(
+  (article) => article.slug === Astro.props.slug,
+);
+let nextArticles = articles.slice(
+  currentPostPosition + 1,
+  currentPostPosition + RECOMMENDATION_LENGTH,
+);
 
 if (nextArticles.length < RECOMMENDATION_LENGTH) {
-    nextArticles.push(...articles.slice(currentPostPosition - (RECOMMENDATION_LENGTH - nextArticles.length), currentPostPosition))
+  nextArticles.push(
+    ...articles.slice(
+      currentPostPosition - (RECOMMENDATION_LENGTH - nextArticles.length),
+      currentPostPosition,
+    ),
+  );
 }
-
 ---
 
 <section class="px-4 md:p-0">
-    <h3 class="font-bold text-2xl mt-8 mb-3">Next up</h3>
-    <div class="flex flex-col gap-3 not-prose">
-    {nextArticles.map(article => <ArticleLink {...article} isNew={false} />)}
-    </div>
+  <h3 class="font-bold text-2xl mt-8 mb-3">Next up</h3>
+  <div class="flex flex-col gap-3 not-prose">
+    {nextArticles.map((article) => <ArticleLink {...article} isNew={false} />)}
+  </div>
 </section>

@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Bio from "../components/Bio.astro";
 import ArticleLink from "../components/ArticleLink.astro";
@@ -14,49 +14,50 @@ const articles = await getAllContent();
 ---
 
 <Layout title="Avinash">
-	<Navbar />
-	<main class="flex justify-center w-full my-[15%] lg:my-[10%] mx-6">
-		<div
-			class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6"
-		>
-			<div class="mb-8">
-				<Bio />
-			</div>
-			<div class="grid grid-cols-3 gap-8">
-				<div
-					class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
-				>
-					<HomepageSection>
-						<SectionHeader>
-							{articles.length} Articles 📝
-							<a
-								slot="aside"
-								href="/rss.xml"
-								class="underline underline-offset-4 inline-flex items-center gap-2 text-text-500"
-							>
-								<p>Subscribe to the RSS feed</p>
-								<Rss />
-							</a>
-						</SectionHeader>
-						<div class="posts flex flex-col gap-3">
-							{
-							  articles.map((article) => {
-								const isNew = sub(new Date(), { days: 30 }) < article.data.date;
-			  
-								return (
-								  <div class="post">
-									<ArticleLink {...article} isNew={isNew} />
-								  </div>
-								);
-							  })
-							}
-						</div>
-					</HomepageSection>
-				</div>
-				<div class="col-span-full lg:col-span-1 flex flex-col gap-8">
-					<SpotifySidebar />
-				</div>
-			</div>
-		</div>
-	</main>
+  <Navbar />
+  <main class="flex justify-center w-full my-[15%] lg:my-[10%] mx-6">
+    <div
+      class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6"
+    >
+      <div class="mb-8">
+        <Bio />
+      </div>
+      <div class="grid grid-cols-3 gap-8">
+        <div
+          class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
+        >
+          <HomepageSection>
+            <SectionHeader>
+              {articles.length} Articles 📝
+              <a
+                slot="aside"
+                href="/rss.xml"
+                class="underline underline-offset-4 inline-flex items-center gap-2 text-text-500"
+              >
+                <p>Subscribe to the RSS feed</p>
+                <Rss />
+              </a>
+            </SectionHeader>
+            <div class="posts flex flex-col gap-3">
+              {
+                articles.map((article) => {
+                  const isNew =
+                    sub(new Date(), { days: 30 }) < article.data.date;
+
+                  return (
+                    <div class="post">
+                      <ArticleLink {...article} isNew={isNew} />
+                    </div>
+                  );
+                })
+              }
+            </div>
+          </HomepageSection>
+        </div>
+        <div class="col-span-full lg:col-span-1 flex flex-col gap-8">
+          <SpotifySidebar />
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>

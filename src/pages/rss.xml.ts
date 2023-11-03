@@ -5,11 +5,11 @@ import { routes } from "../routing";
 
 export async function GET(context: APIContext) {
   const articles = await getCollection("articles");
-  
+
   if (!context.url) {
     throw new Error(`Site configuration is missing!`);
   }
-  
+
   return rss({
     title: "Avinash's Blog",
     description: "Welcome to my digital playground!",

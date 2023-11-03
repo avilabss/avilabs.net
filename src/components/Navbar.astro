@@ -1,7 +1,7 @@
 ---
-import { Image } from "astro:assets"
-import Day from "../components/icons/Day.astro"
-import avatar from "../assets/mini-me.png"
+import { Image } from "astro:assets";
+import Day from "../components/icons/Day.astro";
+import avatar from "../assets/mini-me.png";
 ---
 
 <nav class="px-6 py-4 top-0 w-full navbar" id="navbar">
@@ -33,14 +33,14 @@ import avatar from "../assets/mini-me.png"
 </nav>
 
 <script>
-    import { toggleTheme } from "../scripts/theme-switcher"
+  import { toggleTheme } from "../scripts/theme-switcher";
 
-    document.addEventListener('astro:page-load', () => {
-      const switcher = document.querySelector("#theme-switcher")!;
-      switcher.addEventListener("click", () => {
-          toggleTheme();
-      });
+  document.addEventListener("astro:page-load", () => {
+    const switcher = document.querySelector("#theme-switcher")!;
+    switcher.addEventListener("click", () => {
+      toggleTheme();
     });
+  });
 </script>
 
 <style>

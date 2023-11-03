@@ -2,7 +2,9 @@
   font-weight: 400;
   font-family: "Jetbrains Mono";
   font-style: normal;
-  src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
+  src:
+    local("JetBrains Mono Regular"),
+    local("JetBrainsMono-Regular"),
     url("/fonts/jetbrains-mono/regular-compressed.woff2") format("woff2");
   font-display: swap;
 }
@@ -11,7 +13,9 @@
   font-weight: 500;
   font-family: "Jetbrains Mono";
   font-style: normal;
-  src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
+  src:
+    local("JetBrains Mono Regular"),
+    local("JetBrainsMono-Regular"),
     url("/fonts/jetbrains-mono/medium-compressed.woff2") format("woff2");
   font-display: swap;
 }

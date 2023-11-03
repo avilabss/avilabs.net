@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content"
-import Layout from "../../layouts/Layout.astro"
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 import Navbar from "../../components/Navbar.astro";
 import PostHeader from "../../components/article/PostHeader.astro";
 import TwitterCTA from "../../components/cta/TwitterCTA.astro";
@@ -8,9 +8,10 @@ import NextArticleLinks from "../../components/NextArticleLinks.astro";
 import DoubleUp from "../../components/icons/DoubleUp.astro";
 
 export async function getStaticPaths() {
-  const articleEntries = await getCollection('articles');
-  return articleEntries.map(article => ({
-    params: { slug: article.slug }, props: { article },
+  const articleEntries = await getCollection("articles");
+  return articleEntries.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
   }));
 }
 
@@ -23,7 +24,7 @@ const minutesRead = remarkPluginFrontmatter.minutesRead;
   <Navbar />
   <article class="flex flex-col mx-auto max-w-full text-base w-full">
     <header class="w-full px-6 pt-16 pb-8 article-grid">
-      <PostHeader 
+      <PostHeader
         banner={article.data.banner}
         date={new Date(article.data.date)}
         title={article.data.title}
@@ -34,27 +35,27 @@ const minutesRead = remarkPluginFrontmatter.minutesRead;
         type="article"
       />
     </header>
-    <main class="main-article article-grid px-6 lg:px-0 text-xl lg:text-2xl leading-10 my-8 text-text-700 w-full larger-line-height">
+    <main
+      class="main-article article-grid px-6 lg:px-0 text-xl lg:text-2xl leading-10 my-8 text-text-700 w-full larger-line-height"
+    >
       <Content />
     </main>
     <div class="w-full h-full relative">
-      <hr 
+      <hr
         class="mt-2 mb-2 border-t-1 w-full h-[1px] border-body-800 col-span-full transition-all"
       />
       <div class="article-grid relative z-20 py-12">
         <TwitterCTA />
-        {
-          Astro.params.slug && (
-            <NextArticleLinks slug={Astro.params.slug} />
-          )
-        }
+        {Astro.params.slug && <NextArticleLinks slug={Astro.params.slug} />}
       </div>
       <div class="overlay rotate-180 z-0"></div>
     </div>
   </article>
 </Layout>
 
-<button class="z-10 to-top-button items-center gap-2 opacity-0 transition-all appearance-none hidden xl:flex fixed bottom-4 left-16 text-text-200 duration-300 hover:text-brand-900 font-sans">
+<button
+  class="z-10 to-top-button items-center gap-2 opacity-0 transition-all appearance-none hidden xl:flex fixed bottom-4 left-16 text-text-200 duration-300 hover:text-brand-900 font-sans"
+>
   <DoubleUp />
   <span>Go Up</span>
 </button>
@@ -62,7 +63,9 @@ const minutesRead = remarkPluginFrontmatter.minutesRead;
 <script>
   import throttle from "lodash/throttle";
 
-  const toTopButton = document.querySelector('.to-top-button') as HTMLButtonElement;
+  const toTopButton = document.querySelector(
+    ".to-top-button",
+  ) as HTMLButtonElement;
 
   document.addEventListener(
     "scroll",

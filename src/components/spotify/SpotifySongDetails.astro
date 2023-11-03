@@ -1,24 +1,24 @@
 ---
 interface Props {
-    title: string;
-    artist: string;
-    className?: string;
+  title: string;
+  artist: string;
+  className?: string;
 }
 
 const { title, artist, className } = Astro.props;
 ---
 
 <div class:list={[className, "flex flex-col justify-center overflow-hidden"]}>
-    <h2
-        aria-label="Track name"
-        class="text-text-800 font-medium whitespace-nowrap overflow-hidden text-ellipsis"
-    >
-        {title}
-    </h2>
-    <h3
-        aria-label="Track artist"
-        class="text-text-300 text-sm whitespace-nowrap overflow-hidden text-ellipsis"
-    >
-        {artist}
-    </h3>
+  <h2
+    aria-label="Track name"
+    class="text-text-800 font-medium whitespace-nowrap overflow-hidden text-ellipsis"
+  >
+    {title}
+  </h2>
+  <h3
+    aria-label="Track artist"
+    class="text-text-300 text-sm whitespace-nowrap overflow-hidden text-ellipsis"
+  >
+    {artist}
+  </h3>
 </div>

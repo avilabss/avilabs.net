@@ -3,7 +3,9 @@ a:where(.underlined),
   display: inline-flex;
   position: relative;
   text-decoration: none;
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 .article-grid
