@@ -1,21 +1,32 @@
 ---
 const { title, description } = Astro.props
+import { ViewTransitions } from "astro:transitions";
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width" />
 <meta name="description" content={description ?? "Avinash's Blog"} />
 <meta name="generator" content={Astro.generator} />
+<meta name="description" content="I'm a passionate coder who thrives on turning creative ideas into digital realities.">
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;900&family=Lora:ital,wght@1,700&display=swap" rel="stylesheet">
+<ViewTransitions />
 <title>{title}</title>
 
 <script>
     import { initTheme } from "../scripts/theme-switcher"
-    initTheme()
+    
+    document.addEventListener('astro:page-load', () => {
+      // This only runs once.
+      initTheme();
+    }, { once: true });
+
+    document.addEventListener('astro:after-swap', () => {
+      initTheme();
+    });
 </script>
 
 <noscript>

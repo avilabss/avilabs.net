@@ -35,9 +35,11 @@ import avatar from "../assets/mini-me.png"
 <script>
     import { toggleTheme } from "../scripts/theme-switcher"
 
-    const switcher = document.querySelector("#theme-switcher")!;
-    switcher.addEventListener("click", () => {
-        toggleTheme();
+    document.addEventListener('astro:page-load', () => {
+      const switcher = document.querySelector("#theme-switcher")!;
+      switcher.addEventListener("click", () => {
+          toggleTheme();
+      });
     });
 </script>
 

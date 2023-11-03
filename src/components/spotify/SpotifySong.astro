@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import { type LikedTrack } from "../../scripts/spotify";
+import SongSkeletonDetails from "./SpotifySongDetails.astro";
+
+interface Props extends LikedTrack {}
+
+const { props } = Astro;
+---
+
+<article class="flex gap-3 justify-between items-center">
+    <div class="items-center flex gap-3 w-full">
+        {
+            props.coverUrl && (
+              <Image
+                slot="image"
+                alt={`Album art for ${props.title}`}
+                width={64}
+                height={64}
+                format="webp"
+                src={props.coverUrl}
+                loading="lazy"
+                class="rounded aspect-square outline outline-1 outline-body-700 object-cover h-[64px] w-[64px]"
+              />
+            )
+          }
+        <SongSkeletonDetails title={props.title} artist={props.artist} />
+    </div>
+</article>
