@@ -4,9 +4,10 @@ import SectionHeader from "../SectionHeader.astro";
 import SpotifyDateDivider from "./SpotifyDateDivider.astro";
 import SpotifySong from "./SpotifySong.astro";
 import { getLikedTracks } from "../../scripts/spotify";
-import { groupBy } from "lodash";
+import pkg from 'lodash';
 import { formatDistance } from "date-fns";
 
+const { groupBy } = pkg;
 const { class: className } = Astro.props;
 const likedTracks = await getLikedTracks();
 
