@@ -150,4 +150,8 @@
     margin-top: 1.4rem !important;
     margin-bottom: 1.4rem !important;
   }
+
+  .main-article > p > a {
+    color: var(--brand-900) !important;
+  }
 }
