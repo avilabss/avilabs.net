@@ -10,6 +10,9 @@ interface Props {
 }
 
 const { title, description, banner, url } = Astro.props;
+
+const useOgImage = banner ? banner.src : MyAvatar.src
+const useOgImageUrl = `https://www.avilabs.net${useOgImage}`
 ---
 
 <meta charset="utf-8" />
@@ -27,7 +30,7 @@ const { title, description, banner, url } = Astro.props;
 <meta property="og:title" content={title}>
 <meta property="og:type" content="article">
 <meta property="og:url" content={url ?? "https://www.avilabs.net/"}>
-<meta property="og:image" content={banner ? banner.src : MyAvatar.src}>
+<meta property="og:image" content={useOgImageUrl}>
 <meta property="og:description" content={description ?? "I'm a passionate coder who thrives on turning creative ideas into digital realities."}>
 
 <ViewTransitions />
