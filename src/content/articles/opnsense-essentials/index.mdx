@@ -33,7 +33,7 @@ Click Save
 
 Port forwarding might sound a bit technical, but it's actually pretty neat! It's like setting up a direct path for internet traffic to reach a specific device or service in your network. Let's say you want your awesome service that is hosted on a computer accessible from the internet. Port forwarding makes it happen by opening up a specific 'port' and directing the right traffic straight to where it needs to go.
 
-To get this working in OPNsense, here's a simple breakdown: 
+To get this working in OPNsense, here's a simple breakdown:
 
 ```md
 Go to `Firewall > NAT > Port Forward`
@@ -51,9 +51,9 @@ Click Save
 After setting this up, your services should be accessible via your public IP. However, you may still encounter issues when trying to access them from inside your local network. To resolve this, you'll need to make some additional configurations.
 
 ```md
-1. Go to `Firewall > Settings > Advanced`
-2. Enable Reflection for port forwards
-3. Enable Automatic outbound NAT for Reflection
+Go to `Firewall > Settings > Advanced`
+Enable Reflection for port forwards
+Enable Automatic outbound NAT for Reflection
 ```
 
 # ARP TABLE
@@ -76,4 +76,3 @@ In OPNsense, keeping things fresh is easy. Also, some updates may require a full
 Go to `System > Firmware > Status`
 Click `Check for update`
 ```
-
