@@ -1,5 +1,5 @@
 ---
-title: "OPNsense Essentials: A Friendly Guide to Firewall Freedom"
+title: "OPNsense Essentials: A Beginner's Guide to Firewalls"
 date: "2023-02-15"
 description: "Basic to Advanced Configurations for OPNsense like setting up port forwarding, static IPs, and more!"
 tags:
@@ -9,70 +9,123 @@ slug: opnsense-essentials
 banner: "./assets/banner.jpg"
 ---
 
-I've been using OPNsense for a while now. I thought about switching to PFsense because it's more popular, but I found out OPNsense gets updates more often and its interface is much better. So, I stuck with OPNsense. Even though OPNsense's official docs are good, I had to Google some small things. This article is meant to be a guide for anyone trying to figure out OPNsense, whether it's simple stuff or more complicated tasks.
+import Picture from "../../../components/article/Picture.astro";
+
+OPNsense has been one of my most favourite firewall for quite some time now and it currently fulfills all my homelab and business needs.
+This article is meant to be a guide for anyone getting started with OPNsense, and is looking do both basic and complex things with thier firewall.
+
+So, whether you're a home-lab enthusiast or gearing up for business-level security, this guide will walk you through the essentials of OPNsense,
+helping you set up, configure, and navigate its features with ease whether you're diving into the basics or exploring more advanced configurations.
 
 # Static IP
 
-Alright, so, a static IP is like giving your device a permanent home address on your network. It doesn't change, unlike those dynamic ones that keep switching around. It's super handy for certain devices you always want to find in the same spot on your network, like a printer or your trusty file server.
+A static IP is like giving your device a permanent address on your network.
+So, whenever your machine asks the DHCP server for an IP, it will always get the one you have configured for its Mac address.
+If not set, the DHCP server will assign a random IP from the available range. This is not necessarily a bad thing, but a nightmare if you wanna set up port-forwards, or do anything of that nature.
 
-Here's how to set a static IP in OPNsense:
+Before we begin, let's grab the Mac address of your device! 
 
 ```md
-Go to `Services > DHCPv4 > LAN`
-Scroll to the bottom and click `+` icon under `DHCP Static Mappings for this interface` section
-Add MAC address of the device
-Add a Client identifier
-Add an IP address you wish to set
-Add a hostname you wish to set
-Add a Description
-Enable ARP Table Static Entry
-Click Save
+Go to `Services > DHCPv4 > Leases`
 ```
+
+You will see a huge table of all connected devices, their IP address, Mac addresses, and host names.
+Often times you would be able to identify your device using the hostname, otherwise you need to check the IP on your device and check it against the table for its Mac address.
+
+Now that we have a Mac address, let's go ahead and set a static IP!
+
+```md
+1. Go to `Services > DHCPv4 > LAN`.
+2. Scroll to the bottom and click `+` icon under `DHCP Static Mappings for this interface` section.
+3. Fill in the following details:
+  - MAC address: [Enter MAC address]
+  - Client identifier: [Enter client identifier]
+  - IP address: [Enter the desired static IP]
+  - Hostname: [Enter a hostname for the device]
+  - Description: [Add a brief description]
+4. Enable `ARP Table Static Entry`.
+```
+
+This is how it should look in the end.
+
+import static_ip_settings from "./assets/static_ip_settings.jpg";
+
+<Picture
+  src={static_ip_settings}
+  alt="static ip settings"
+  aspectRatio="800 :282"
+/>
+
+Now click *Save* and we are done! Now you can simply restart your device to get a static IP!
 
 # Port Forwarding
 
-Port forwarding might sound a bit technical, but it's actually pretty neat! It's like setting up a direct path for internet traffic to reach a specific device or service in your network. Let's say you want your awesome service that is hosted on a computer accessible from the internet. Port forwarding makes it happen by opening up a specific 'port' and directing the right traffic straight to where it needs to go.
+Port forwarding might sound a bit technical, but it's actually pretty easy! 
+You can use it to *expose* internal services on your network to the internet.
+It's like setting up a direct path for internet traffic to reach a specific device or service in your network, allowing you to host websites, run game servers, or access specific services from anywhere on the internet.
 
-To get this working in OPNsense, here's a simple breakdown:
-
-```md
-Go to `Firewall > NAT > Port Forward`
-Click `+` icon to add a new rule
-Set Protocol to `TCP/UDP`
-Set Destination to WAN address
-Set Destination port range according to your desire
-Set Redirect target IP to IP of your local machine hosting the service
-Set Redirect target port to machines port serving the service
-Enable Log
-Add a Description
-Click Save
-```
-
-After setting this up, your services should be accessible via your public IP. However, you may still encounter issues when trying to access them from inside your local network. To resolve this, you'll need to make some additional configurations.
+Here's how to make it work!
 
 ```md
-Go to `Firewall > Settings > Advanced`
-Enable Reflection for port forwards
-Enable Automatic outbound NAT for Reflection
+1. Go to `Firewall > NAT > Port Forward`
+2. Click `+` icon to add a new rule
+3. Set `Protocol` to `TCP/UDP`
+4. Set `Destination` to `WAN address`
+5. Set `Destination port range` according to your desire
+6. Set `Redirect target IP` to the IP of your local machine hosting the service
+7. Set `Redirect target port` to the port number of the service
+8. Enable `Log`
+9. Add a `Description`
 ```
 
-# ARP TABLE
+This is how it should look.
 
-The ARP table is like your network's address book, keeping track of who's who. It stores the MAC addresses linked to IP addresses, helping devices find each other on the network. You can utilize this table to discover the IPs and MAC addresses of all connected devices in your network.
+import port_forward_settings from "./assets/port_forward_settings.jpg";
 
-Finding the ARP table is very simple in OPNsense.
+<Picture
+  src={port_forward_settings}
+  alt="port forward settings"
+  aspectRatio="800:809"
+/>
+
+Now click *Save* and we are done!
+
+After this, your internal services should be accessible via. your public IP. 
+However, you may still encounter issues when trying to access them from inside your local network. 
+To resolve this, you'll need to change some additional NAT settings.
 
 ```md
-Go to `Interfaces > Diagnostics > ARP Table`
+1. Go to `Firewall > Settings > Advanced`
+2. Enable `Reflection for port forwards`
+3. Enable `Automatic outbound NAT for Reflection`
 ```
 
-# Update Firmware
+This would give OPNsense more clarity on how to map internal requests to external services hosted inside the network.
 
-Okay, so updating your firmware is like giving your OPNsense a tune-up. It's not just about new features; it's also about fixing bugs and keeping things safe and sound. It's like hitting the 'update' button on your apps—important stuff!
+import nat_settings from "./assets/nat_settings.jpg";
 
-In OPNsense, keeping things fresh is easy. Also, some updates may require a full reboot. OPNsense takes care of it though.
+<Picture
+  src={nat_settings}
+  alt="nat settings"
+  aspectRatio="525: 167"
+/>
+
+Now, click *Save* to apply the settings.
+
+# Update
+
+Keeping your firewall up to date with the latest security patches is essential for defending your internal network against various vulnerabilities, 
+provided you have configured everything correctly.
+
+Updating is quite simple. Just follow these steps:
 
 ```md
-Go to `System > Firmware > Status`
-Click `Check for update`
+1. Go to `System > Firmware > Status`
+2. Click `Check for update`
 ```
+
+It's worth noting that some updates may require a full reboot of the firewall. 
+Therefore, it's recommended to perform updates when you are comfortable with your services going down for a few minutes.
+
+Remember, staying current with updates ensures that your firewall is equipped with the latest security measures,
+safeguarding your network from potential threats.

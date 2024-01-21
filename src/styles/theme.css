@@ -95,7 +95,8 @@
     --astro-code-token-link: honeydew;
   }
 
-  code {
+  /* Code line numbering */
+  /* code {
     counter-reset: step;
     counter-increment: step 0;
   }
@@ -109,7 +110,7 @@
     white-space: nowrap;
     text-align: right;
     color: var(--astro-code-token-comment);
-  }
+  } */
 
   /* code block font */
   code,
