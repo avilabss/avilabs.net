@@ -1,6 +1,15 @@
 ---
-const { title, description } = Astro.props;
 import { ViewTransitions } from "astro:transitions";
+import MyAvatar from "../assets/my-avatar.png";
+
+interface Props {
+  title?: string;
+  description?: string;
+  banner?: { src: string; alt: string };
+  url?: string;
+}
+
+const { title, description, banner, url } = Astro.props;
 ---
 
 <meta charset="utf-8" />
@@ -15,6 +24,12 @@ import { ViewTransitions } from "astro:transitions";
   href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;900&family=Lora:ital,wght@1,700&display=swap"
   rel="stylesheet"
 />
+<meta property="og:title" content={title}>
+<meta property="og:type" content="article">
+<meta property="og:url" content={url ?? "https://www.avilabs.net/"}>
+<meta property="og:image" content={banner ? banner.src : MyAvatar.src}>
+<meta property="og:description" content={description ?? "I'm a passionate coder who thrives on turning creative ideas into digital realities."}>
+
 <ViewTransitions />
 <title>{title}</title>
 

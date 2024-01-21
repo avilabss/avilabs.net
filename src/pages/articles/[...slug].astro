@@ -20,7 +20,7 @@ const { Content, remarkPluginFrontmatter } = await article.render();
 const minutesRead = remarkPluginFrontmatter.minutesRead;
 ---
 
-<Layout title={article.data.title} description={article.data.description}>
+<Layout title={article.data.title} description={article.data.description} banner={article.data.banner} url={`https://www.avilabs.net/articles/${article.slug}`}>
   <Navbar />
   <article class="flex flex-col mx-auto max-w-full text-base w-full">
     <header class="w-full px-6 pt-16 pb-8 article-grid">
