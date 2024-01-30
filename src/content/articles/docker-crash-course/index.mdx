@@ -1,12 +1,412 @@
 ---
-title: "Docker crash course"
+title: "Docker Crash Course for Beginners"
 date: "2022-10-30"
-description: "Docker has to be one of the best tool for DevOps"
+description: "Breaking down the must-know container tricks, installation hacks, and commands that make deploying apps a breeze."
 tags:
   - DevOps
   - Docker
-slug: docker-crash-course
+slug: docker-crash-course-for-beginners
 banner: "./assets/banner.png"
 ---
 
-⚒️ This blog is in the making ⚒️
+import Picture from "../../../components/article/Picture.astro";
+
+Docker is one of those things that seems a bit overwhelming and a bit of a chore to get started and implement, but once you learn it, you will make sure to have Docker in almost all your projects. In this blog, we'll break down Docker's complexity, making it easy to grasp and implement. By the end, you'll discover why it's truly that kind of awesome tool!
+
+Now, let's delve into what Docker is and why it's a game-changer for developers.
+
+# What is Docker?
+Docker is a powerful containerization tool that creates a consistent environment for your applications, ensuring they run seamlessly across different platforms capable of running Docker. Think of it as an ultra-lightweight virtual machine, containing everything your application needs. The beauty lies in the compact size of containers, allowing easy deployment of numerous instances on a single host. With the contained nature of containerization, you can effortlessly switch between various applications, databases, development environments, and more without cluttering your host system.
+
+Beyond its technical prowess, Docker plays a crucial role in transforming collaboration and deployment processes for modern development teams. By encapsulating applications and their dependencies into portable containers, Docker breaks down traditional barriers, making it a must-have tool for streamlined collaboration among developers, testers, and operations teams. Moreover, the consistent runtime environment ensures that applications behave the same way across development, testing, and production stages, simplifying deployment pipelines and reducing compatibility issues.
+
+Understanding Docker's ability to provide a standardized and efficient workflow not only enhances individual developer productivity but also makes it an indispensable asset for fostering teamwork and accelerating the software development life cycle.
+
+# Key Docker Concepts
+In Docker, **Images** are lightweight, standalone, and executable packages that contain all the necessary components to run an application, including the code, runtime, libraries, and system tools. These images serve as the foundation for creating containers.
+
+**Containers** on the other hand, are the active, runtime instances created from Docker images. They encapsulate an application and its environment, ensuring consistent behavior across different systems. Containers operate in isolation from each other and the host system.
+
+To summarize, Images are static snapshots that encapsulate an application and its dependencies, while containers are the runtime instances of those images. In simpler terms, images are the blueprints, and containers are the actively running instances built from those blueprints.
+
+# Installing Docker
+# To install docker on **macOS**
+1. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+2. Double click the downloaded dmg file.
+3. Drag Docker into Applications folder.
+
+# To install docker on **Linux**
+```bash
+1. apt install curl
+2. curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+3. sudo sh /tmp/get-docker.sh
+```
+
+# To install docker on **Windows**
+1. Ensure CPU virtualization is enabled in your BIOS settings.
+2. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux).
+3. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) and install.
+
+# Basic Docker Commands
+To learn basic docker commands, let's take [MySQL image](https://hub.docker.com/_/mysql) as an example. We will download, run, delete, and learn a few more commands using this image.
+Let's start by **pulling** the MySQL image to our local machine first!
+
+```bash
+docker pull mysql
+```
+
+This will download the latest MySQL image to your PC. Optionally, you may also pass a tag to download a specific version of MySQL like so.
+
+```bash
+docker pull mysql:8.3.0
+```
+
+Note that passing tag is optional and docker will always attempt to pull the latest available image when tag is absent.
+
+With that out of the way, let's now **run** the image we just pulled. Now, a quick disclaimer before I show you the command. This will be overwhelming when you look at it but believe me, it will all make sense once I explain each and every line. So, hang in there!
+
+```bash
+docker run \
+	--name=mysql \
+	--restart=always \
+	-v ./mysql:/var/lib/mysql \
+	-p 3306:3306 \
+	-e MYSQL_USER=dev \
+	-e MYSQL_PASSWORD=changeme.dev \
+	-e MYSQL_DATABASE=fun-db \
+	-e MYSQL_ROOT_PASSWORD=changeme.123 \
+	-d \
+	mysql
+```
+
+*Inhale! Hold for 5sec! Exhale!*
+
+Ok, so the command starts with **docker run** to instate that we wish to run something. Let's ignore everything in between for a moment and jump to the bottom. There's the image name we wish to run. You can run an image just with these 3 keywords.
+
+```bash
+docker run mysql
+```
+
+But, you will always pass some optional parameters to ensure the container behaves a certain way once running.
+
+**--name** is our first such parameter. This sets a name for our container. Docker will assign a random name to your container when you have not set it explicitly. But it's always a good idea to name your container as it will help you tremendously when doing other operations on the container.
+
+Then we have **--restart**. This sets the restart policy for your container. By default, it is set to **no**, which means the container will not be restarted automatically once the container exits. 
+Apart from **always**, which will automatically restart the container, we have **on-failure**, which will restart only when the container exits with a non-zero status error. Optionally, you may also pass the number of retries the Docker daemon attempt like so *on-failure[:max-retries]*. Then we have **unless-stopped** which will always restart the container unless stopped explicitly.
+
+Next we have **-v**, short for **--volume**. This is used to mount local folders inside the container and is often used to make data inside the containers persistent as the container loses all the data when they are restarted.
+Here, we are mounting the **mysql** folder in the current working directory to */var/lib/mysql* inside the container where everything related to MySQL is stored. 
+
+Then we have **-p**, short for **--publish**. We know that mysql service is accessible on port 3306 but since it's exposed locally inside the container, we won't be able to access it on our host machine. 
+To make our mysql service accessible to our host we need to expose, or port forward our service inside the container to the host. 
+Here, the pattern is **-p [port-on-host]:[port-on-container]**. We chose to forward the service to the same port on the host but say if you would like to access MySQL on port 5000 on your host machine then you would simply do **-p 5000:3306**.
+
+Now we have a lot of **-e** parameters, short for **--env**. This is how you set environment variables for your container. Here, we are using it to set username, password, database name, and root password. You will know all available environment variables related to a specific container by referring to their docker hub page or documentation.
+
+And last **-d**, short for **--detach**. This will simply start the container in the background.
+
+Docker run is not limited to these parameters. There are many more and you can always refer to the [documentation](https://docs.docker.com/engine/reference/commandline/container_run/) to learn more.
+
+Now that we have our MySQL container running and are familiar with all the configurations we have done to our container, let's quickly **list all the containers**.
+
+```bash
+docker ps
+# -- OR --
+docker container ls
+```
+
+This will list all the **running** containers. 
+
+To list all containers including the ones that have exited and paused, use the **-a** flag.
+
+```bash
+docker ps -a
+# -- OR --
+docker container ls -a
+```
+
+Now you should see several columns, let's look at them one at a time.
+- **CONTAINER ID** - This is a random ID assigned by docker for every container. You can use this to carry out various operations on the container by referring to it with this ID.
+- **IMAGE** - Name of the image running as a container.
+- **COMMAND** - Command used within the container to start the service.            
+- **CREATED** - When the container was created.
+- **STATUS** - Status of the container. *Up, Paused or Exited*.
+- **PORTS** - Exposed ports details.                          
+- **NAMES** - Name of the container.
+
+Now let's speed through some commands for managing docker containers!
+
+```bash
+# Stop container
+docker stop container-name-or-id
+
+# -- OR --
+docker container stop container-name-or-id
+```
+
+```bash
+# Start container
+docker start container-name-or-id
+
+# -- OR --
+docker container start container-name-or-id
+```
+
+```bash
+# Restart container
+docker restart container-name-or-id
+
+# -- OR --
+docker container restart container-name-or-id
+```
+
+```bash
+# Pause container
+docker pause container-name-or-id
+
+# -- OR --
+docker container pause container-name-or-id
+```
+
+```bash
+# Unpause container
+docker unpause container-name-or-id
+
+# -- OR --
+docker container unpause container-name-or-id
+```
+
+```bash
+# Remove container
+docker rm container-name-or-id
+
+# -- OR --
+docker container rm container-name-or-id
+```
+
+```bash
+# Force remove container
+docker rm -f container-name-or-id
+
+# -- OR --
+docker container rm -f container-name-or-id
+```
+
+Now let's speed through some commands for managing docker images!
+
+```bash
+# List available images
+docker images
+
+# -- OR --
+docker image ls
+```
+
+```bash
+# Remove an image
+docker rmi image-id
+
+# -- OR --
+docker image rm image-id
+```
+
+# Docker Compose
+From the last docker run command, you can see how big and complex commands might get at times. 
+What if you'd also like to deploy multiple services at once? Docker Compose is the solution for all these issues.
+It's basically writing a **YML** file containing all the deployment instructions. Docker then reads it to start the containers.
+The default filename is **docker-compose.yml** which will be detected by docker-compose automatically. 
+You may also name it pretty much anything, but then you would need to explicitly pass the file name to docker-compose.
+
+As an example, let's deploy MySQL with phpmyadmin using docker-compose!
+Create a file named **docker-compose.yml** and let's start writing!
+
+Let's start by creating a volume for MySQL persistence. This time we won't mount the folder to the current working directory. We would simply ask docker to create a volume named **db-store** for us and docker will take care of the rest.
+
+```yml
+volumes:
+  db-store:
+```
+
+Next, we need to create a network so that both MySQL and phpmyadmin are on the same network so they can talk to each other.
+We'll create a network named **mysql-network** with **bridge** driver. You can learn more about docker networking [here](https://docs.docker.com/network/).
+
+```yml
+networks:
+  mysql-network:
+    name: mysql-network
+    driver: bridge
+```
+
+Now it's time to create **services**. All container configurations will go within this block.
+For starters, we will write configurations for MySQL.
+
+```yml
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    restart: always
+    networks:
+      - mysql-network
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: dev-db
+      MYSQL_ROOT_PASSWORD: changeme.123
+    volumes:
+      - db-store:/var/lib/mysql
+```
+
+Let's understand the config we have written. First, we have named our service **mysql**, then comes the image, container name, and restart policy. 
+This is a just very verbose representation of what we did while deploying with docker run as you can see.
+Next, we will mention that this container is part of the **mysql-network** network. Next, we have **expose**, which will make MySQL accessible within **mysql-network**.
+Then we have our port forward to the host. After that, we will add all environment variables required by this container and add the volume we created at the very start.
+
+Similarly, let's also write configurations for the **phpmyadmin** service.
+
+```yml
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: mysql-gui
+    restart: always
+    networks:
+      - mysql-network
+    expose:
+      - 80
+    ports:
+      - 3000:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+```
+
+This would be our final **docker-compose.yml**
+
+```yml
+volumes:
+  db-store:
+
+networks:
+  mysql-network:
+    name: mysql-network
+    driver: bridge
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    restart: always
+    networks:
+      - mysql-network
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: dev-db
+      MYSQL_ROOT_PASSWORD: changeme.123
+    volumes:
+      - db-store:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: mysql-gui
+    restart: always
+    networks:
+      - mysql-network
+    expose:
+      - 80
+    ports:
+      - 3000:80
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+```
+
+Let's deploy this!
+
+```bash
+docker compose up -d
+```
+
+Like before **-d** starts everything in the background.
+Next, we will learn to create our own docker images. 
+While doing that sometimes you might notice that docker hasn't picked up the latest config or code.
+If that's the case, you will need to force docker to build and then deploy like so.
+
+```bash
+docker compose up -d --build
+```
+
+# Building Custom Images
+
+Creating custom docker images is pretty easy. 
+As an example, I will create a custom image for one of my [projects](https://github.com/avilabss/my-ip) which is a simple [fastapi](https://fastapi.tiangolo.com/) server that helps users identify their public IP.
+
+Let's start by creating a file named **Dockerfile**.
+Now we need to figure out a base image on top of which we will create our image.
+Think of base images as a starting point catered specifically towards running a specific type of application.
+There are base images for pretty much everything you can imagine like, [python](https://hub.docker.com/_/python), [golang](https://hub.docker.com/_/golang), [debian](https://hub.docker.com/_/debian), [ubuntu](https://hub.docker.com/_/ubuntu) or even [cuda](https://hub.docker.com/r/nvidia/cuda) for applications that take advantage of GPU.
+
+We will go with [python](https://hub.docker.com/_/python) since our application is based on Python.
+We will also choose a specific tag **3.10.4-alpine3.15** to ensure that the latest changes won't break our deployment.
+
+Let's add the config to use a base image.
+
+```dockerfile
+FROM python:3.10.4-alpine3.15
+```
+
+Next, we will set up a working directory, this is where our application will live.
+The convention is to have **/app** as your working directory.
+
+```dockerfile
+WORKDIR /app
+```
+
+Now we need to copy our code to **/app** which will also include **requirements.txt** which we will later use to install all dependencies our application requires.
+
+```dockerfile
+COPY . .
+```
+
+Here, the first **.** means source, and the **.** means destination. So, it means, copying everything from the current working directory to **/app**.
+
+Let's now install all the dependencies.
+
+```dockerfile
+RUN pip3 install -r requirements.txt
+```
+
+And now, we will add the final instruction to run our server!
+
+```dockerfile
+CMD [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
+```
+
+This is the final **Dockerfile**.
+
+```dockerfile
+FROM python:3.10.4-alpine3.15
+WORKDIR /app
+COPY . .
+RUN pip3 install -r requirements.txt
+CMD [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
+```
+
+Now that we are done, let's build this image!
+
+```bash
+docker build -t my-ip:latest .
+```
+
+Here, **-t [image-name]:[tag]** is how you can name and tag your newly built image, and **.** tells the docker to find the Dockerfile in the current working directory. 
+
+Now you can list all available images using the command we learned above to find the new image we just built. 
+You can go ahead and play with this new image by running it and creating a compose deployment for it.

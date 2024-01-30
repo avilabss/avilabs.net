@@ -10,6 +10,7 @@
     --font-family-article: "Soleil", ui-serif, serif;
     --font-family-article-title: "Mackinac", serif;
     --font-family-code: "Jetbrains Mono", monospace;
+    --font-family-highlight: "Sriracha", sans-serif;
   }
 
   html {
@@ -19,6 +20,7 @@
 
     /* brand */
     --brand-900: hsl(344, 93%, 55%);
+    --brand-500: hsl(344, 93%, 65%);
 
     /* body light */
     --body-100: hsl(225 21% 53%);
@@ -148,10 +150,36 @@
   }
 
   .main-article > p > a {
-    color: var(--brand-900) !important;
+    color: var(--brand-500) !important;
   }
 
-  /* Code block numbering */
+  .article-grid ul {
+    list-style: disc !important;
+    padding-left: 2rem !important;
+  }
+
+  .article-grid ol {
+    list-style: decimal !important;
+    padding-left: 2rem !important;
+  }
+
+  .article-grid strong {
+    color: var(--brand-900) !important;
+    font-family: var(--font-family-highlight) !important;
+    font-weight: bold !important;
+  }
+
+  .article-grid em {
+    color: var(--brand-900) !important;
+    font-family: var(--font-family-highlight) !important;
+  }
+
+  .article-grid ol > code {
+    font-family: var(--font-family-code) !important;
+    background-color: var(--astro-code-color-background) !important;
+  }
+
+  /* Code block formatting */
   @media only screen and (min-width: 768px) {
     .astro-code {
       font-size: 1.25rem !important;

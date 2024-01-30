@@ -60,7 +60,11 @@
 
   .article-grid ul {
     /* fallback */
-    list-style-type: disc;
-    list-style-type: japanese-formal;
+    list-style: disc;
+  }
+
+  .article-grid ol {
+    /* fallback */
+    list-style: decimal;
   }
 }

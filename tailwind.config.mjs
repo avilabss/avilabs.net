@@ -12,6 +12,7 @@ export default {
       colors: {
         brand: {
           900: "var(--brand-900)",
+          500: "var(--brand-500)",
         },
         body: {
           100: "var(--body-100)",
