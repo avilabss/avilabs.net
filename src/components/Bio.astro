@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import Email from "./icons/Email.astro";
 import Github from "./icons/Github.astro";
+import Gitlab from "./icons/Gitlab.astro";
 import Twitter from "./icons/Twitter.astro";
 import ExternalLink from "./ExternalLink.astro";
 import MyAvatar from "../assets/my-avatar.png";
@@ -40,6 +41,18 @@ import MyAvatar from "../assets/my-avatar.png";
               class="hover:text-text-900"
             >
               <Github />
+            </ExternalLink>
+          )
+        }
+        {
+          import.meta.env.SOCIAL_GITLAB && (
+            <ExternalLink
+              noIcon
+              href={`https://gitlab.com/${import.meta.env.SOCIAL_GITLAB}`}
+              target="_blank"
+              class="hover:text-text-900"
+            >
+              <Gitlab />
             </ExternalLink>
           )
         }
